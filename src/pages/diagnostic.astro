@@ -1,0 +1,105 @@
+---
+import Page from "../layouts/Page.astro";
+---
+
+<Page title="Device diagnostics">
+    <main>
+        <h2>Touch event and browser diagnostics</h2>
+        <h3>Pointers and hover states</h3>
+        <div class="section">
+            <table>
+                <tr id="header-row"> </tr>
+                <tr id="result-row"> </tr>
+            </table>
+        </div>
+        <br />
+        <br />
+        <br />
+        <h3>Events and clicks</h3>
+        <div class="section" id="event-section">
+            <button id="event-target">Click to register events</button>
+            <textarea></textarea>
+            <div id="output"></div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <h3>Important objects</h3>
+        <button id="object-event-harvester">Gather event information</button>
+        <div class="section">
+            <div id="object-output"></div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <h3>General info grab bag</h3>
+        <div class="section">
+            <div id="grab-bag-output"></div>
+        </div>
+    </main>
+    <script src="../scripts/diagnostic.ts"></script>
+</Page>
+<!-- 
+    These styles must use global because many elements that this script handles are dynamically created - 
+    Astro's scoping breaks the style of these dynamically added elements 
+-->
+<style is:global lang="less">
+    #output {
+        height: 100px;
+        width: 400px;
+        overflow-y: scroll;
+
+        font-size: 14px;
+        border: 1px solid;
+        border-radius: 4px;
+        padding-left: 4px;
+    }
+
+    .section {
+        display: flex;
+
+        > * {
+            margin-top: 32px;
+            margin-left: 16px;
+        }
+    }
+
+    #event-section {
+        height: 80px;
+    }
+
+    .object-title {
+        font-weight: bold;
+        position: absolute;
+        background: lightgrey;
+        padding: 8px;
+    }
+
+    .object-entry {
+        display: flex;
+        padding: 8px;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+        border: 1px solid black;
+
+        pre,
+        .content {
+            max-height: 400px;
+            overflow-y: scroll;
+            padding-top: 24px;
+        }
+
+        .content {
+            padding-top: 48px;
+        }
+    }
+
+    #object-output,
+    #grab-bag-output {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+</style>
