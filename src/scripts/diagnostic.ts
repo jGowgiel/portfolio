@@ -80,16 +80,15 @@ const touchTypes = [
 ];
 
 function registerTouchInputHandlers() {
-    const output = document.querySelector("#object-output")!;
+    const output = document.querySelector("#output");
+    const target = document.querySelector("#event-target");
     touchTypes.forEach((eventType) => {
-        document.querySelectorAll("#event-target").forEach((elem) => {
-            elem.addEventListener(eventType, (e) => {
-                const newNode = document.createTextNode(e.type);
+        target.addEventListener(eventType, (e) => {
+            const newNode = document.createTextNode(e.type);
 
-                output.appendChild(newNode);
-                output.appendChild(document.createElement("br"));
-                output.scrollTop = output.scrollHeight;
-            });
+            output.appendChild(newNode);
+            output.appendChild(document.createElement("br"));
+            output.scrollTop = output.scrollHeight;
         });
     });
 }
@@ -152,7 +151,13 @@ function addEventHarvesterFor(eventName: string) {
 }
 
 function readObjectInformation() {
-    const objectsToOutput = ["window", "screen", "window.navigator", "window.screen", "window.visualViewport"];
+    const objectsToOutput = [
+        "window",
+        "screen",
+        "window.navigator",
+        "window.screen",
+        "window.visualViewport",
+    ];
     objectsToOutput.forEach((objectPath) => addObjectToOutput(objectPath, eval(objectPath)));
 
     const eventsToHarvest = [
