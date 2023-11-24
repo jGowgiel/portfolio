@@ -1,0 +1,122 @@
+---
+import Page from "../layouts/Page.astro";
+---
+
+<Page title="Touch events">
+    <main>
+        <div class="check-container"></div>
+        <div class="square"></div>
+        <textarea class="square"></textarea>
+        <div class="output"></div>
+    </main>
+    <script>
+        const touchTypes = [
+            "mousedown",
+            "mousemove",
+            "mouseup",
+            "mouseenter",
+            "mouseover",
+            "touchstart",
+            "touchmove",
+            "touchend",
+            "pointerdown",
+            "pointerup",
+            "pointermove",
+            "click",
+            "dblclick",
+            "contextmenu",
+            "onblur",
+            "blur",
+            "focusout",
+            "keydown",
+            "keyup",
+            "keypress",
+            "compositionstart",
+            "compositionupdate",
+            "compositionend",
+            "gesturestart",
+            "gesturechange",
+            "gestureend",
+            "dragstart",
+            "wheel",
+            "scale",
+            "scroll",
+        ];
+        const checkContainer = document.querySelector(".check-container")!;
+
+        touchTypes.forEach((eventType) => {
+            const outer = document.createElement("div");
+
+            const input = document.createElement("input") as HTMLInputElement;
+            input.name = eventType;
+            input.type = "checkbox";
+            input.checked = true;
+
+            const label = document.createElement("label");
+            label.htmlFor = eventType;
+            label.innerText = eventType;
+
+            outer.appendChild(input);
+            outer.appendChild(label);
+
+            checkContainer.appendChild(outer);
+
+            document.querySelectorAll(".square").forEach((elem) => {
+                elem.addEventListener(eventType, (e) => {
+                    if (e.type.startsWith("gesture")) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+
+                    if (!input.checked) {
+                        return;
+                    }
+                    const newNode = document.createTextNode(e.type);
+                    const output = document.querySelector(".output")!;
+                    output.appendChild(newNode);
+                    output.appendChild(document.createElement("br"));
+                    output.scrollTop = output.scrollHeight;
+                });
+            });
+        });
+    </script>
+</Page>
+<style lang="less">
+    html,
+    body,
+    main {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+    .square {
+        display: flex;
+        width: 200px;
+        margin: 20px;
+        border: 4px solid skyblue;
+        justify-content: center;
+        align-items: center;
+    }
+
+    * {
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .output {
+        display: flex;
+        flex-grow: 1;
+        overflow: scroll;
+        user-select: text;
+        border: 4px solid black;
+        margin: 20px;
+        padding: 8px;
+    }
+
+    .check-container {
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+    }
+</style>
