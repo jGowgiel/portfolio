@@ -80,8 +80,8 @@ const touchTypes = [
 ];
 
 function registerTouchInputHandlers() {
-    const output = document.querySelector("#output");
-    const target = document.querySelector("#event-target");
+    const output = document.querySelector("#output")!;
+    const target = document.querySelector("#event-target")!;
     touchTypes.forEach((eventType) => {
         target.addEventListener(eventType, (e) => {
             const newNode = document.createTextNode(e.type);
