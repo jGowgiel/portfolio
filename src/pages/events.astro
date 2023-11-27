@@ -10,78 +10,96 @@ import Page from "../layouts/Page.astro";
         <div class="output"></div>
     </main>
     <script>
-        const touchTypes = [
-            "mousedown",
-            "mousemove",
-            "mouseup",
-            "mouseenter",
-            "mouseover",
-            "touchstart",
-            "touchmove",
-            "touchend",
-            "pointerdown",
-            "pointerup",
-            "pointermove",
-            "click",
-            "dblclick",
-            "contextmenu",
-            "onblur",
-            "blur",
-            "focusout",
-            "keydown",
-            "keyup",
-            "keypress",
-            "compositionstart",
-            "compositionupdate",
-            "compositionend",
-            "gesturestart",
-            "gesturechange",
-            "gestureend",
-            "dragstart",
-            "wheel",
-            "scale",
-            "scroll",
+        interface EventCategory {
+            title: string;
+            events: string[];
+        }
+
+        const touchTypes: EventCategory[] = [
+            {
+                title: "mouse",
+                events: ["mousedown", "mousemove", "mouseup", "mouseenter", "mouseover"],
+            },
+            { title: "touch", events: ["touchstart", "touchmove", "touchend"] },
+            { title: "pointer", events: ["pointerdown", "pointerup", "pointermove"] },
+            { title: "click", events: ["click", "dblclick", "contextmenu"] },
+            {
+                title: "text",
+                events: [
+                    "onblur",
+                    "blur",
+                    "focusout",
+                    "keydown",
+                    "keyup",
+                    "keypress",
+                    "compositionstart",
+                    "compositionupdate",
+                    "compositionend",
+                ],
+            },
+            {
+                title: "misc",
+                events: [
+                    "gesturestart",
+                    "gesturechange",
+                    "gestureend",
+                    "dragstart",
+                    "wheel",
+                    "scale",
+                    "scroll",
+                ],
+            },
         ];
-        const checkContainer = document.querySelector(".check-container")!;
+        const eventContainer = document.querySelector(".check-container")!;
 
-        touchTypes.forEach((eventType) => {
-            const outer = document.createElement("div");
-
-            const input = document.createElement("input") as HTMLInputElement;
-            input.name = eventType;
-            input.type = "checkbox";
-            input.checked = true;
-
-            const label = document.createElement("label");
-            label.htmlFor = eventType;
-            label.innerText = eventType;
-
-            outer.appendChild(input);
-            outer.appendChild(label);
-
-            checkContainer.appendChild(outer);
-
-            document.querySelectorAll(".square").forEach((elem) => {
-                elem.addEventListener(eventType, (e) => {
-                    if (e.type.startsWith("gesture")) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-
-                    if (!input.checked) {
-                        return;
-                    }
-                    const newNode = document.createTextNode(e.type);
-                    const output = document.querySelector(".output")!;
-                    output.appendChild(newNode);
-                    output.appendChild(document.createElement("br"));
-                    output.scrollTop = output.scrollHeight;
-                });
-            });
+        touchTypes.forEach(({ title, events }) => {
+            const outer = createCheckboxesForEvents(title, events);
+            eventContainer.appendChild(outer);
         });
+
+        function createCheckboxesForEvents(title: string, events: string[]) {
+            const checkContainer = document.createElement("div");
+            checkContainer.appendChild(document.createTextNode(title));
+            checkContainer.classList.add("check-wrapper");
+            for (const eventType of events) {
+                const inputContainer = document.createElement("div");
+                const input = document.createElement("input") as HTMLInputElement;
+                input.name = eventType;
+                input.type = "checkbox";
+                input.checked = true;
+
+                const label = document.createElement("label");
+                label.htmlFor = eventType;
+                label.innerText = eventType;
+
+                inputContainer.appendChild(input);
+                inputContainer.appendChild(label);
+
+                document.querySelectorAll(".square").forEach((elem) => {
+                    elem.addEventListener(eventType, (e) => {
+                        if (e.type.startsWith("gesture")) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
+
+                        if (!input.checked) {
+                            return;
+                        }
+                        const newNode = document.createTextNode(e.type);
+                        const output = document.querySelector(".output")!;
+                        output.appendChild(newNode);
+                        output.appendChild(document.createElement("br"));
+                        output.scrollTop = output.scrollHeight;
+                    });
+                });
+                checkContainer.appendChild(inputContainer);
+            }
+            return checkContainer;
+        }
     </script>
 </Page>
-<style lang="less">
+<!-- Must be global to accomodate the dynamically created checkboxes  -->
+<style is:global lang="less">
     html,
     body,
     main {
@@ -90,6 +108,7 @@ import Page from "../layouts/Page.astro";
         display: flex;
         flex-direction: row;
     }
+
     .square {
         display: flex;
         width: 200px;
@@ -118,5 +137,10 @@ import Page from "../layouts/Page.astro";
         display: flex;
         flex-direction: column;
         width: 200px;
+    }
+
+    .check-wrapper {
+        display: flex;
+        flex-direction: column;
     }
 </style>
