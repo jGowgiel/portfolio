@@ -1,82 +1,99 @@
 ---
 import Page from "../layouts/Page.astro";
+import { allOnAppend, allOffAppend } from "../scripts/sharedconstants";
+interface EventCategory {
+    title: string;
+    events: string[];
+}
+
+const eventInfo: EventCategory[] = [
+    {
+        title: "mouse",
+        events: ["mousedown", "mousemove", "mouseup", "mouseenter", "mouseover"],
+    },
+    { title: "touch", events: ["touchstart", "touchmove", "touchend"] },
+    { title: "pointer", events: ["pointerdown", "pointerup", "pointermove"] },
+    { title: "click", events: ["click", "dblclick", "contextmenu"] },
+    {
+        title: "text",
+        events: [
+            "onblur",
+            "blur",
+            "focusout",
+            "keydown",
+            "keyup",
+            "keypress",
+            "compositionstart",
+            "compositionupdate",
+            "compositionend",
+        ],
+    },
+    {
+        title: "misc",
+        events: [
+            "gesturestart",
+            "gesturechange",
+            "gestureend",
+            "dragstart",
+            "wheel",
+            "scale",
+            "scroll",
+        ],
+    },
+];
 ---
 
 <Page title="Touch events">
     <main>
-        <div class="check-container"></div>
+        <div class="check-container">
+            {
+                eventInfo.map(({ title, events }) => {
+                    return (
+                        <div class="check-section">
+                            <div class="section-header">
+                                <h3>{title}</h3>
+                                <button name={title + allOnAppend}>All on</button>
+                                <button name={title + allOffAppend}>All off</button>
+                            </div>
+                            {events.map((event) => {
+                                return (
+                                    <div>
+                                        <input
+                                            class="input-check"
+                                            type="checkbox"
+                                            name={event}
+                                            checked="true"
+                                        />
+                                        <label for={event}>{event}</label>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })
+            }
+        </div>
         <div class="square"></div>
         <textarea class="square"></textarea>
         <div class="output"></div>
     </main>
     <script>
-        interface EventCategory {
-            title: string;
-            events: string[];
-        }
+        import { allOnAppend } from "../scripts/sharedconstants";
 
-        const touchTypes: EventCategory[] = [
-            {
-                title: "mouse",
-                events: ["mousedown", "mousemove", "mouseup", "mouseenter", "mouseover"],
-            },
-            { title: "touch", events: ["touchstart", "touchmove", "touchend"] },
-            { title: "pointer", events: ["pointerdown", "pointerup", "pointermove"] },
-            { title: "click", events: ["click", "dblclick", "contextmenu"] },
-            {
-                title: "text",
-                events: [
-                    "onblur",
-                    "blur",
-                    "focusout",
-                    "keydown",
-                    "keyup",
-                    "keypress",
-                    "compositionstart",
-                    "compositionupdate",
-                    "compositionend",
-                ],
-            },
-            {
-                title: "misc",
-                events: [
-                    "gesturestart",
-                    "gesturechange",
-                    "gestureend",
-                    "dragstart",
-                    "wheel",
-                    "scale",
-                    "scroll",
-                ],
-            },
-        ];
-        const eventContainer = document.querySelector(".check-container")!;
+        /**
+         * Setup the core batch of listeners on each `square`, which cause all the events configured
+         * in the `eventInfo` to be logged
+         */
+        function configureActiveSquareListeners() {
+            document.querySelectorAll(".square").forEach((square) => {
+                for (const input of document.querySelectorAll(".input-check")) {
+                    const eventType = input.getAttribute("name");
 
-        touchTypes.forEach(({ title, events }) => {
-            const outer = createCheckboxesForEvents(title, events);
-            eventContainer.appendChild(outer);
-        });
+                    if (!eventType || !(input instanceof HTMLInputElement)) {
+                        return;
+                    }
 
-        function createCheckboxesForEvents(title: string, events: string[]) {
-            const checkContainer = document.createElement("div");
-            checkContainer.appendChild(document.createTextNode(title));
-            checkContainer.classList.add("check-wrapper");
-            for (const eventType of events) {
-                const inputContainer = document.createElement("div");
-                const input = document.createElement("input") as HTMLInputElement;
-                input.name = eventType;
-                input.type = "checkbox";
-                input.checked = true;
-
-                const label = document.createElement("label");
-                label.htmlFor = eventType;
-                label.innerText = eventType;
-
-                inputContainer.appendChild(input);
-                inputContainer.appendChild(label);
-
-                document.querySelectorAll(".square").forEach((elem) => {
-                    elem.addEventListener(eventType, (e) => {
+                    square.addEventListener(eventType, (e) => {
                         if (e.type.startsWith("gesture")) {
                             e.preventDefault();
                             e.stopPropagation();
@@ -91,22 +108,55 @@ import Page from "../layouts/Page.astro";
                         output.appendChild(document.createElement("br"));
                         output.scrollTop = output.scrollHeight;
                     });
-                });
-                checkContainer.appendChild(inputContainer);
-            }
-            return checkContainer;
+                }
+            });
         }
+
+        /**
+         * Setup listeners for the "all on" and "all off" toggles, with properly bounded scopes to only toggle
+         * checks in their sections
+         */
+        function configureCheckSectionToggles() {
+            document.querySelectorAll(".check-section").forEach((section) => {
+                const sectionChecks: HTMLInputElement[] = [
+                    ...section.querySelectorAll(".input-check"),
+                ].filter((el): el is HTMLInputElement => el instanceof HTMLInputElement);
+
+                section.querySelectorAll(".section-header button").forEach((button) => {
+                    if (!(button instanceof HTMLButtonElement)) {
+                        return;
+                    }
+
+                    const isOnButton = !!button.getAttribute("name")?.endsWith(allOnAppend);
+
+                    button.addEventListener("click", () => {
+                        sectionChecks.forEach((check) => (check.checked = isOnButton));
+                    });
+                });
+            });
+        }
+
+        /** Run the above event listener handling scripts */
+        configureActiveSquareListeners();
+        configureCheckSectionToggles();
     </script>
 </Page>
-<!-- Must be global to accomodate the dynamically created checkboxes  -->
-<style is:global lang="less">
-    html,
-    body,
-    main {
+<style lang="less">
+    html {
         height: 100%;
         width: 100%;
         display: flex;
-        flex-direction: row;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    main {
+        display: flex;
+        overflow: hidden;
     }
 
     .square {
@@ -136,11 +186,20 @@ import Page from "../layouts/Page.astro";
     .check-container {
         display: flex;
         flex-direction: column;
+        overflow: scroll;
         width: 200px;
     }
 
-    .check-wrapper {
+    .section-header {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+
+        button {
+            height: 32px;
+        }
+
+        * + * {
+            margin-left: 8px;
+        }
     }
 </style>
