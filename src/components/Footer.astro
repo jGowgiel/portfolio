@@ -1,0 +1,36 @@
+---
+import SocialLink from "./SocialLink.astro";
+---
+
+<footer class="wrapper">
+    <div class="divider"></div>
+    <div class="social-list">
+        <SocialLink imageUrl="github-mark.png" link="https://github.com/jGowgiel/portfolio" />
+        <SocialLink imageUrl="ln-blue.png" link="https://www.linkedin.com/in/jarod-gowgiel/" />
+    </div>
+</footer>
+<style lang="less">
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .social-list {
+        display: flex;
+        padding: 0px 16px;
+
+        gap: 16px;
+
+        * + * {
+            margin-left: 8px;
+        }
+    }
+
+    .divider {
+        margin: 16px;
+        height: 1px;
+        background-color: black;
+        width: 30%;
+    }
+</style>

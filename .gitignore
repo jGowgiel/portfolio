@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 ### AWS ###
 .aws-sam/
+
+### VSCode ###
+.vscode/

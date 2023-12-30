@@ -1,0 +1,15 @@
+---
+const { imageUrl, link } = Astro.props;
+---
+
+<a href={link} target="_blank"><img src={imageUrl} /></a>
+<style lang="less">
+    a {
+        display: flex;
+    }
+
+    img {
+        width: 36px;
+        aspect-ratio: 1;
+    }
+</style>
