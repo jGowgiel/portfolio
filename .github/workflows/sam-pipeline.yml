@@ -2,6 +2,7 @@ name: Deploy to AWS
 
 on:
     push:
+        paths: [diagnostic-emailer/**]
         branches: [main]
     workflow_dispatch:
 
