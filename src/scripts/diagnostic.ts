@@ -28,8 +28,8 @@ function createAndAddElementToRow(queryString: string, rowType: string, inputStr
 function readMediaQueries() {
     mediaQueryInputs.forEach((inputString) => {
         const mediaQueryResult = window.matchMedia && window.matchMedia(inputString).matches;
-        createAndAddElementToRow("#header-row", "th", inputString);
-        createAndAddElementToRow("#result-row", "td", mediaQueryResult.toString());
+        createAndAddElementToRow("#diagnostic-header-row", "th", inputString);
+        createAndAddElementToRow("#diagnostic-result-row", "td", mediaQueryResult.toString());
     });
 }
 
@@ -80,8 +80,8 @@ const touchTypes = [
 ];
 
 function registerTouchInputHandlers() {
-    const output = document.querySelector("#output")!;
-    const target = document.querySelector("#event-target")!;
+    const output = document.querySelector("#diagnostic-output")!;
+    const target = document.querySelector("#diagnostic-event-target")!;
     touchTypes.forEach((eventType) => {
         target.addEventListener(eventType, (e) => {
             const newNode = document.createTextNode(e.type);
@@ -122,23 +122,23 @@ const getCircularReplacer = () => {
 
 // Meat and potatoes
 function addObjectToOutput(title: string, obj: { [key: string]: any } | undefined) {
-    const outputElem = document.querySelector("#object-output")!;
+    const outputElem = document.querySelector("#diagnostic-object-output")!;
 
     let output = "";
     try {
         output = JSON.stringify(copyOwnAndInheritedProperties(obj), getCircularReplacer(), 2);
     } catch (error) {
         console.error(error);
-        output = `Can't log ${title}. Try running in "debug" view`;
+        output = `Can't log ${title}.`;
     }
     const outputEntry = document.createElement("div");
-    outputEntry.classList.add("object-entry");
-    outputEntry.innerHTML = `<div class="object-title">${title}</div><pre>${output}</pre>`;
+    outputEntry.classList.add("diagnostic-object-entry");
+    outputEntry.innerHTML = `<div class="diagnostic-object-title">${title}</div><pre>${output}</pre>`;
     outputElem.appendChild(outputEntry);
 }
 
 function addEventHarvesterFor(eventName: string) {
-    const harvesterElem = document.querySelector("#object-event-harvester")!;
+    const harvesterElem = document.querySelector("#diagnostic-object-event-harvester")!;
 
     const listenerClosure = (event: Event) => {
         addObjectToOutput(eventName, event);
@@ -181,10 +181,10 @@ function readObjectInformation() {
  * GENERAL INFO GRAB BAG
  */
 function createAndAddInfoToGrabBag(title: string, text: string) {
-    const outputElem = document.querySelector("#grab-bag-output")!;
+    const outputElem = document.querySelector("#diagnostic-grab-bag-output")!;
     const outputEntry = document.createElement("div");
-    outputEntry.classList.add("object-entry");
-    outputEntry.innerHTML = `<div class="object-title">${title}</div><div class="content">${text}</div>`;
+    outputEntry.classList.add("diagnostic-object-entry");
+    outputEntry.innerHTML = `<div class="diagnostic-object-title">${title}</div><div class="diagnostic-content">${text}</div>`;
     outputElem.appendChild(outputEntry);
 }
 
@@ -211,10 +211,10 @@ function grabMiscInformation() {
 }
 
 function createPersistentOutput(title: string, id: string) {
-    const outputElem = document.querySelector("#grab-bag-output")!;
+    const outputElem = document.querySelector("#diagnostic-grab-bag-output")!;
     const outputEntry = document.createElement("div");
-    outputEntry.classList.add("object-entry");
-    outputEntry.innerHTML = `<div class="object-title">${title}:</div><div class="content" id="${id}"></div>`;
+    outputEntry.classList.add("diagnostic-object-entry");
+    outputEntry.innerHTML = `<div class="diagnostic-object-title">${title}:</div><div class="diagnostic-content" id="${id}"></div>`;
     outputElem.appendChild(outputEntry);
 }
 

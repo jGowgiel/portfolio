@@ -1,50 +1,52 @@
 ---
 import Page from "../layouts/Page.astro";
+import "../styles/global.css";
 ---
 
 <Page title="Device diagnostics">
     <main>
         <h2>Touch event and browser diagnostics</h2>
         <h3>Pointers and hover states</h3>
-        <div class="section">
+        <div class="diagnostic-section">
             <table>
-                <tr id="header-row"> </tr>
-                <tr id="result-row"> </tr>
+                <tr id="diagnostic-header-row"> </tr>
+                <tr id="diagnostic-result-row"> </tr>
             </table>
         </div>
         <br />
         <br />
         <br />
         <h3>Events and clicks</h3>
-        <div class="section" id="event-section">
-            <button id="event-target">Click to register events</button>
+        <div class="diagnostic-section" id="diagnostic-event-section">
+            <button id="diagnostic-event-target">Click to register events</button>
             <textarea></textarea>
-            <div id="output"></div>
+            <div id="diagnostic-output"></div>
         </div>
         <br />
         <br />
         <br />
         <h3>Important objects</h3>
-        <button id="object-event-harvester">Gather event information</button>
-        <div class="section">
-            <div id="object-output"></div>
+        <button id="diagnostic-object-event-harvester">Gather event information</button>
+        <div class="diagnostic-section">
+            <div id="diagnostic-object-output"></div>
         </div>
         <br />
         <br />
         <br />
         <h3>General info grab bag</h3>
-        <div class="section">
-            <div id="grab-bag-output"></div>
+        <div class="diagnostic-section">
+            <div id="diagnostic-grab-bag-output"></div>
         </div>
     </main>
     <script src="../scripts/diagnostic.ts"></script>
 </Page>
 <!-- 
     These styles must use global because many elements that this script handles are dynamically created - 
-    Astro's scoping breaks the style of these dynamically added elements 
+    Astro's scoping breaks the style of these dynamically added elements. To keep styles specific, they 
+    are prefixed with `diagnostic-`
 -->
 <style is:global lang="less">
-    #output {
+    #diagnostic-output {
         height: 100px;
         width: 400px;
         overflow-y: scroll;
@@ -55,7 +57,7 @@ import Page from "../layouts/Page.astro";
         padding-left: 4px;
     }
 
-    .section {
+    .diagnostic-section {
         display: flex;
 
         > * {
@@ -64,18 +66,18 @@ import Page from "../layouts/Page.astro";
         }
     }
 
-    #event-section {
+    #diagnostic-event-section {
         height: 80px;
     }
 
-    .object-title {
+    .diagnostic-object-title {
         font-weight: bold;
         position: absolute;
         background: lightgrey;
         padding: 8px;
     }
 
-    .object-entry {
+    .diagnostic-object-entry {
         display: flex;
         padding: 8px;
         flex-direction: column;
@@ -84,19 +86,19 @@ import Page from "../layouts/Page.astro";
         border: 1px solid black;
 
         pre,
-        .content {
+        .diagnostic-content {
             max-height: 400px;
             overflow-y: scroll;
             padding-top: 24px;
         }
 
-        .content {
+        .diagnostic-content {
             padding-top: 48px;
         }
     }
 
-    #object-output,
-    #grab-bag-output {
+    #diagnostic-object-output,
+    #diagnostic-grab-bag-output {
         display: flex;
         flex-grow: 1;
         flex-direction: row;

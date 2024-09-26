@@ -1,5 +1,7 @@
 ---
 import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
 interface Props {
     title: string;
     showHome?: boolean | undefined;
@@ -24,11 +26,6 @@ const { title, showHome = true } = Astro.props;
         <Footer />
     </body>
 </html>
-<style is:global>
-    html {
-        font-family: sans-serif;
-    }
-</style>
 <style lang="less">
     body {
         flex-grow: 1;
