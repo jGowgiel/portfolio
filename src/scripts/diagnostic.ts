@@ -245,3 +245,6 @@ registerTouchInputHandlers();
 readObjectInformation();
 grabMiscInformation();
 registerPersistentListeners();
+
+// Without an export member, it seems Astro has a hard time handling this file
+export {};

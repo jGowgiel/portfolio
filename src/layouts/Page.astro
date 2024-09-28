@@ -13,17 +13,23 @@ const { title, showHome = true } = Astro.props;
 <!doctype html>
 <html lang="en">
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+            as="style"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
         <meta charset="UTF-8" />
         <meta name="description" content="Under construction - Portfolio site" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
-            rel="stylesheet"
-        />
+
         <title>{title}</title>
     </head>
     <body>

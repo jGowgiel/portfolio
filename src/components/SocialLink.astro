@@ -1,8 +1,8 @@
 ---
-const { imageUrl, link } = Astro.props;
+const { imageUrl, link, altText } = Astro.props;
 ---
 
-<a href={link} target="_blank"><img src={imageUrl} /></a>
+<a href={link} target="_blank"><img src={imageUrl} alt={altText} /></a>
 <style lang="less">
     a {
         display: flex;
