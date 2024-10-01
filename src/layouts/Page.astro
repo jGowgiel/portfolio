@@ -8,6 +8,26 @@ interface Props {
 }
 
 const { title, showHome = true } = Astro.props;
+
+function enumeratePaths(remaining: string[], constructed: string[]) {
+    const next = remaining.shift();
+    if (next === undefined) {
+        // Append the home selector in the base case
+        return ["/", ...constructed];
+    }
+
+    constructed.push(`${constructed.join("")}/${next}`);
+    return enumeratePaths(remaining, constructed);
+}
+
+/** The list of paths that should be included in the breadcrumbs */
+const breadcrumbPaths = enumeratePaths(
+    Astro.url.pathname.split("/").filter((s) => s !== ""),
+    [],
+);
+
+// -1 would be the current, -2 is the URL to go "back" to
+const backUrl = breadcrumbPaths[breadcrumbPaths.length - 2] ?? "/";
 ---
 
 <!doctype html>
@@ -33,7 +53,10 @@ const { title, showHome = true } = Astro.props;
         <title>{title}</title>
     </head>
     <body>
-        <a style={!!showHome ? "" : "display: none"} href="/">Home</a>
+        <nav>
+            <a style={!!showHome ? "" : "display: none"} href="/">Home</a>
+            <a style={!!showHome ? "" : "display: none"} href={backUrl}>Back</a>
+        </nav>
         <slot />
         <Footer />
     </body>
@@ -48,6 +71,11 @@ const { title, showHome = true } = Astro.props;
     body {
         display: flex;
         flex-direction: column;
+    }
+
+    nav {
+        display: flex;
+        gap: 8px;
     }
 
     .footer {

@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import Card from "./Card.astro";
+
+interface Props {
+    collection: "blog" | "travel";
+}
+
+const { collection } = Astro.props;
+const sortedEntries = (await getCollection(collection)).sort((a, b) => {
+    if (a.data.date == b.data.date) {
+        return a.data.title < b.data.title ? 1 : -1;
+    } else {
+        return a.data.date < b.data.date ? 1 : -1;
+    }
+});
+---
+
+<h2>All posts</h2>
+
+<ul>
+    {
+        sortedEntries.map((entry) => {
+            return (
+                <li>
+                    <Card
+                        title={entry.data.title}
+                        subtitle={entry.data.date}
+                        navTarget={`/${collection}/${entry.slug}`}
+                        imgInfo={entry.data.image}
+                    />
+                </li>
+            );
+        })
+    }
+</ul>
+
+<style lang="less">
+    ul {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+        padding: 0px;
+        margin: 16px;
+    }
+
+    li {
+        overflow: hidden;
+
+        max-height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

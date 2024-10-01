@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+
+// A link card has rouned edges, an optional image used as a cover, and a title and a
+// subtitle. Clicking it navigates to the given URL.
+
+interface Props {
+    title: string;
+    subtitle?: string | undefined;
+    navTarget: string;
+    imgInfo?:
+        | {
+              src: string;
+              alt: string;
+          }
+        | undefined;
+}
+const { title, subtitle, navTarget: target, imgInfo } = Astro.props;
+---
+
+<a href={target}>
+    <div class="card">
+        {imgInfo !== undefined && <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} />}
+        <div class="text">
+            <span>{title}</span>
+            <span class="subtitle">{subtitle}</span>
+        </div>
+    </div>
+</a>
+<style lang="less">
+    a {
+        // Within this specialized link component, I do not
+        // want default link styles
+        text-decoration: none;
+        color: inherit;
+
+        display: flex;
+        flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+
+        position: relative;
+
+        border: 1px solid hsl(240, 100%, 90%);
+        border-radius: 8px;
+
+        box-sizing: border-box;
+        background-color: white;
+
+        &:hover {
+            background-color: hsl(240, 100%, 90%);
+        }
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+
+        background-color: inherit;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        color: hsl(0, 0, 50%);
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+        overflow: hidden;
+        align-self: center;
+    }
+</style>
