@@ -25,7 +25,7 @@ const sortedEntries = (await getCollection(collection)).sort((a, b) => {
                 <li>
                     <Card
                         title={entry.data.title}
-                        subtitle={entry.data.date}
+                        subtitle={`${entry.data.date} | ${entry.data.author}`}
                         navTarget={`/${collection}/${entry.slug}`}
                         imgInfo={entry.data.image}
                     />

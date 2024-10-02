@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Page from "../../layouts/Page.astro";
+import PostPage from "../../layouts/PostPage.astro";
 
 export async function getStaticPaths() {
     const blogEntries = await getCollection("travel");
@@ -12,9 +12,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+const imgInfo = entry.data.image && { src: entry.data.image.src, alt: entry.data.image.src };
 ---
 
-<Page title={entry.data.title}>
-    <h1>{entry.data.title}</h1>
+<PostPage title={entry.data.title} imgInfo={imgInfo}>
     <Content />
-</Page>
+</PostPage>

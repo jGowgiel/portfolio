@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets";
+import Page from "./Page.astro";
+
+interface Props {
+    title: string;
+    imgInfo?:
+        | {
+              src: string;
+              alt: string;
+          }
+        | undefined;
+}
+
+const { title, imgInfo } = Astro.props;
+---
+
+<Page title={title}>
+    <div class="wrapper">
+        {imgInfo !== undefined && <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} />}
+        <h2>{title}</h2>
+        <slot />
+    </div>
+</Page>
+
+<style lang="less">
+    .wrapper {
+        margin-top: 16px;
+    }
+
+    // Targets the `img` embedded in the Astro `Image` component
+    img {
+        height: auto;
+        max-width: min(100%, 500px);
+
+        border-radius: 8px;
+    }
+</style>
