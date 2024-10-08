@@ -3,7 +3,7 @@ title: "One week to Italy"
 author: "Jarod Gowgiel"
 date: "2024-10-01"
 image:
-    src: "https://jarodg.dev/italy-test.webp"
+    src: "https://images.jarodg.dev/italy-test.webp"
     alt: "Italian coastline"
 ---
 
