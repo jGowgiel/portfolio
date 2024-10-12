@@ -4,6 +4,6 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
     site: "https://www.jarodg.dev",
     image: {
-        domains: ["jarodg.dev"],
+        domains: ["images.jarodg.dev"],
     },
 });

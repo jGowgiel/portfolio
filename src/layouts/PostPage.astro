@@ -17,7 +17,16 @@ const { title, imgInfo } = Astro.props;
 
 <Page title={title}>
     <div class="wrapper">
-        {imgInfo !== undefined && <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} />}
+        {
+            imgInfo !== undefined && (
+                <>
+                    <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} />
+                    <div class="caption">
+                        <em>{imgInfo.alt}</em>
+                    </div>
+                </>
+            )
+        }
         <h2>{title}</h2>
         <slot />
     </div>
@@ -28,10 +37,18 @@ const { title, imgInfo } = Astro.props;
         margin-top: 16px;
     }
 
+    .caption {
+        font-size: 14px;
+        padding-bottom: 8px;
+        color: hsl(0, 0%, 40%);
+    }
+
     // Targets the `img` embedded in the Astro `Image` component
     img {
         height: auto;
+        width: auto;
         max-width: min(100%, 500px);
+        max-height: 400px;
 
         border-radius: 8px;
     }

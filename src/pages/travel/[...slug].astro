@@ -13,9 +13,20 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
-const imgInfo = entry.data.image && { src: entry.data.image.src, alt: entry.data.image.src };
+const imgInfo = entry.data.image && { src: entry.data.image.src, alt: entry.data.image.alt };
 ---
 
 <PostPage title={entry.data.title} imgInfo={imgInfo}>
+    <div class="album-link">
+        <a href="https://www.icloud.com/sharedalbum/#B0y532ODWJtJJOd" target="_blank"
+            >Shared album (more pictures!)</a
+        >
+    </div>
     <Content />
 </PostPage>
+
+<style lang="less">
+    .album-link {
+        padding-bottom: 16px;
+    }
+</style>

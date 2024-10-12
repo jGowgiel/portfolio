@@ -8,3 +8,13 @@ pre,
 code {
     font-family: monospace;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 4px;
+}

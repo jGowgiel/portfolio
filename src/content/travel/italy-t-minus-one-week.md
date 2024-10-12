@@ -4,7 +4,7 @@ author: "Jarod Gowgiel"
 date: "2024-10-01"
 image:
     src: "https://images.jarodg.dev/italy-test.webp"
-    alt: "Italian coastline"
+    alt: "A generic photo of the Italian coastline"
 ---
 
 ### We'll be headed to Italy in one week!
