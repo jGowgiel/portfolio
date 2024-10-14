@@ -15,7 +15,7 @@ interface Props {
 const { title, imgInfo } = Astro.props;
 ---
 
-<Page title={title}>
+<Page title={title} gutterPercent={10}>
     <div class="wrapper">
         {
             imgInfo !== undefined && (

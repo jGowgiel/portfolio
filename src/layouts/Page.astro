@@ -5,9 +5,15 @@ import "../styles/global.css";
 interface Props {
     title: string;
     showHome?: boolean | undefined;
+    /**
+     * Some pages (e.g. those with much text) look better with a percent
+     * based gutter on the left and right.
+     */
+    gutterPercent?: number;
 }
 
-const { title, showHome = true } = Astro.props;
+const { title, showHome = true, gutterPercent } = Astro.props;
+const gutterString = `${gutterPercent}%`;
 
 function enumeratePaths(remaining: string[], constructed: string[]) {
     const next = remaining.shift();
@@ -62,11 +68,13 @@ const backUrl = breadcrumbPaths[breadcrumbPaths.length - 2] ?? "/";
             <a style={!!showHome ? "" : "display: none"} href="/">Home</a>
             <a style={!!showHome ? "" : "display: none"} href={backUrl}>Back</a>
         </nav>
-        <slot />
+        <div class="slot-wrapper">
+            <slot />
+        </div>
         <Footer />
     </body>
 </html>
-<style lang="less">
+<style lang="less" define:vars={{ gutterString }}>
     body {
         flex-grow: 1;
         justify-content: space-between;
@@ -86,5 +94,9 @@ const backUrl = breadcrumbPaths[breadcrumbPaths.length - 2] ?? "/";
     .footer {
         position: fixed;
         bottom: 0;
+    }
+
+    .slot-wrapper {
+        padding: 0px var(--gutterString);
     }
 </style>
