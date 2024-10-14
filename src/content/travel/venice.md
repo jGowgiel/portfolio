@@ -34,6 +34,8 @@ And so, we now have four days to see as much of Florence as we can! There'll be 
 
 Here are some other trips stats that'll give you an additional peek into how we are enjoying ourselves:
 
+### Stats
+
 **Running total of Lactaid pills consumed:** 5
 
 **Running total of souvenirs purchased:** 2

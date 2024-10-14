@@ -20,7 +20,7 @@ const { title, imgInfo } = Astro.props;
         {
             imgInfo !== undefined && (
                 <>
-                    <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} />
+                    <Image src={imgInfo.src} alt={imgInfo.alt} inferSize={true} loading="eager" />
                     <div class="caption">
                         <em>{imgInfo.alt}</em>
                     </div>
