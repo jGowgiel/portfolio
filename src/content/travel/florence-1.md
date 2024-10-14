@@ -30,3 +30,11 @@ The next day (the day I'm writing this) we landed at Caffe Rosano for cappuccino
 For lunch, we headed back to the Mercato Centrale and toured through the bottom section (which had been closed on Sunday when we had visited the day before). We nabbed a sandwich and an arancini, then headed back over to the Duomo to walk through the attached museum. Inside was a meticulous reproduction of the statues and structures of the old facade of the Duomo, as well as a variety of robes and clothing, frescoes, sculptures, and miniature models of the Duomo's walls from different stages of the design of the newest version (circa the 1880s or so).
 
 After our Duomo-heavy day we hit a few yarn shops that Ariel had noticed around Florence to replenish her "future project" stores for when we're back in the states. And now we're settled back in the hotel, tip tapping away on this post (and Ariel on one of her applications for her Master's program). Later on, we headed to Antica Trattoria da Tito for dinner. The walls, ceilings, and even the ceiling fan blades were all covered in signatures from visitors from across the world, and the food was delicious! We had an antipasti platter, as well as pasta dishes with boar and duck. Afterwards, we headed back to the hotel to digest and get ready for the day tomorrow. We've got a few bits of shopping to try and accomplish (Ariel got me in to a few yarn stores, so now we're going to a couple of antique and watch stores for me to try and pretend like I know what's nice and what isn't) as well as some obligatory Florence leather shopping. Tomorrow is also our Pitti Palace day, exploring the palace itself as well as the garden and grounds. Looking forward to it!
+
+### Stats
+
+**Running total of espresso shots consumed:** 16
+
+**Running total of gelato scoops:** 7
+
+**Running total of liters of wine drunk:** 2
