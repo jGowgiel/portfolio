@@ -1,7 +1,7 @@
 ---
 title: "Cinque Terre - a little rain can't stop us"
 author: "Jarod and Ariel"
-date: "2024-10-18"
+date: "2024-10-19"
 image:
     src: "https://images.jarodg.dev/IMG_5623.jpeg"
     alt: "Mirror selfie feat. a focacceria"
