@@ -5,6 +5,7 @@ import "../styles/global.css";
 interface Props {
     title: string;
     showHome?: boolean | undefined;
+    hideOverflow?: boolean | undefined;
     /**
      * Some pages (e.g. those with much text) look better with a percent
      * based gutter on the left and right.
@@ -12,8 +13,8 @@ interface Props {
     gutterPercent?: number;
 }
 
-const { title, showHome = true, gutterPercent } = Astro.props;
-const gutterString = `${gutterPercent}%`;
+const { title, showHome = true, hideOverflow = false, gutterPercent } = Astro.props;
+const gutterString = `${gutterPercent ?? 0}%`;
 
 function enumeratePaths(remaining: string[], constructed: string[]) {
     const next = remaining.shift();
@@ -68,7 +69,7 @@ const backUrl = breadcrumbPaths[breadcrumbPaths.length - 2] ?? "/";
             <a style={!!showHome ? "" : "display: none"} href="/">Home</a>
             <a style={!!showHome ? "" : "display: none"} href={backUrl}>Back</a>
         </nav>
-        <div class="slot-wrapper">
+        <div class="slot-wrapper" style={!hideOverflow ? "" : "overflow: hidden"}>
             <slot />
         </div>
         <Footer />

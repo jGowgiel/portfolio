@@ -44,7 +44,7 @@ const eventInfo: EventCategory[] = [
 ];
 ---
 
-<Page title="Touch events">
+<Page title="Touch events" hideOverflow={true}>
     <main>
         <div class="check-container">
             {
@@ -163,6 +163,10 @@ const eventInfo: EventCategory[] = [
         display: flex;
         overflow: hidden;
         flex-grow: 1;
+    }
+
+    main {
+        height: 100%;
     }
 
     body {
