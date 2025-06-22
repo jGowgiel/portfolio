@@ -1,8 +1,16 @@
 ---
-import Page from "../layouts/Page.astro";
+import { TRAVEL_ACCESS_KEY } from "astro:env/server";
 import Directory from "../components/Directory.astro";
+import AccessKeyProtectedPage from "../layouts/AccessKeyProtectedPage.astro";
+import Page from "../layouts/Page.astro";
+
+export const prerender = false;
+
+const key = TRAVEL_ACCESS_KEY;
 ---
 
-<Page title="Travel">
-    <Directory collection="travel" />
-</Page>
+<AccessKeyProtectedPage requiredAccessKey={key}>
+    <Page title="Travel">
+        <Directory collection="travel" />
+    </Page>
+</AccessKeyProtectedPage>

@@ -1,29 +1,41 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PostPage from "../../layouts/PostPage.astro";
+import AccessKeyProtectedPage from "../../layouts/AccessKeyProtectedPage.astro";
+import { TRAVEL_ACCESS_KEY } from "astro:env/server";
 
-export async function getStaticPaths() {
-    const blogEntries = await getCollection("travel");
-    return blogEntries.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+export const prerender = false;
+
+// Since travel pages are protected by an access key, they
+// cannot be built the usual, `getStaticPaths` way.
+const pages = (await getCollection("travel")).reduce((acc, curr) => {
+    acc.set(curr.slug, curr);
+    return acc;
+}, new Map<string, CollectionEntry<"travel">>());
+
+const { slug } = Astro.params;
+const entry = pages.get(slug ?? "");
+
+if (!entry) {
+    return Astro.redirect("404");
 }
 
-const { entry } = Astro.props;
 const { Content } = await entry.render();
 
 const imgInfo = entry.data.image && { src: entry.data.image.src, alt: entry.data.image.alt };
+const key = TRAVEL_ACCESS_KEY;
 ---
 
-<PostPage title={entry.data.title} imgInfo={imgInfo}>
-    <div class="album-link">
-        <a href="https://www.icloud.com/sharedalbum/#B0y532ODWJtJJOd" target="_blank"
-            >Shared album (more pictures!)</a
-        >
-    </div>
-    <Content />
-</PostPage>
+<AccessKeyProtectedPage requiredAccessKey={key}>
+    <PostPage title={entry.data.title} imgInfo={imgInfo}>
+        <div class="album-link">
+            <a href="https://www.icloud.com/sharedalbum/#B0y532ODWJtJJOd" target="_blank"
+                >Shared album (more pictures!)</a
+            >
+        </div>
+        <Content />
+    </PostPage>
+</AccessKeyProtectedPage>
 
 <style lang="less">
     .album-link {

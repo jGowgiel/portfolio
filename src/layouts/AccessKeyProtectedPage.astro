@@ -1,0 +1,58 @@
+---
+import { TRAVEL_ACCESS_KEY } from "astro:env/server";
+import Page from "./Page.astro";
+
+export const prerender = false;
+
+interface Props {
+    requiredAccessKey: string;
+}
+
+const { requiredAccessKey: requiredAccessKey } = Astro.props;
+
+function parseAccessKeys(): string[] {
+    return Astro.cookies.get("Access-Key")?.json() ?? [];
+}
+
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+        const newKey = data.get("accesskey")?.toString();
+
+        const validAccessKeys = new Set([TRAVEL_ACCESS_KEY]);
+        if (newKey == undefined || !validAccessKeys.has(newKey)) {
+            throw new Error("Invalid or missing submitted key");
+        }
+
+        const accessKeys: Set<string> = new Set(parseAccessKeys());
+        accessKeys.add(newKey);
+
+        Astro.cookies.set("Access-Key", JSON.stringify([...accessKeys]));
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
+
+const hasAccess = parseAccessKeys().includes(requiredAccessKey);
+---
+
+{
+    !hasAccess && (
+        <Page title="Key needed">
+            <div>
+                <h4>Limited access</h4>
+                <p>If you would like to view this content and don't know what this is - text me.</p>
+                <form method="POST">
+                    <label>
+                        Password:
+                        <input type="text" name="accesskey" />
+                    </label>
+                    <button>Submit</button>
+                </form>
+            </div>
+        </Page>
+    )
+}
+{hasAccess && <slot />}
