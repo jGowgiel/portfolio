@@ -1,7 +1,11 @@
 ---
-import { TRAVEL_ACCESS_KEY } from "astro:env/server";
 import Page from "./Page.astro";
+import { parseAccessKeys } from "../util";
 
+/**
+ * Note that ANY page that uses this functionality will have to also have `prerender = false`.
+ * The console should warn you about attempting to access request headers if you forget to do so.
+ */
 export const prerender = false;
 
 interface Props {
@@ -10,32 +14,7 @@ interface Props {
 
 const { requiredAccessKey: requiredAccessKey } = Astro.props;
 
-function parseAccessKeys(): string[] {
-    return Astro.cookies.get("Access-Key")?.json() ?? [];
-}
-
-if (Astro.request.method === "POST") {
-    try {
-        const data = await Astro.request.formData();
-        const newKey = data.get("accesskey")?.toString();
-
-        const validAccessKeys = new Set([TRAVEL_ACCESS_KEY]);
-        if (newKey == undefined || !validAccessKeys.has(newKey)) {
-            throw new Error("Invalid or missing submitted key");
-        }
-
-        const accessKeys: Set<string> = new Set(parseAccessKeys());
-        accessKeys.add(newKey);
-
-        Astro.cookies.set("Access-Key", JSON.stringify([...accessKeys]));
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(error.message);
-        }
-    }
-}
-
-const hasAccess = parseAccessKeys().includes(requiredAccessKey);
+const hasAccess = parseAccessKeys(Astro.cookies).includes(requiredAccessKey);
 ---
 
 {
@@ -44,8 +23,9 @@ const hasAccess = parseAccessKeys().includes(requiredAccessKey);
             <div>
                 <h4>Limited access</h4>
                 <p>If you would like to view this content and don't know what this is - text me.</p>
-                <form method="POST">
-                    <input type="text" name="accesskey" />
+                <form method="POST" action="/access">
+                    <input type="text" name="accessKey" />
+                    <input type="hidden" name="originPath" value={Astro.url.pathname} />
                     <button>Submit</button>
                 </form>
             </div>
