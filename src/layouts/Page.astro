@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { title, showHome = true, hideOverflow = false, gutterPercent } = Astro.props;
-const gutterString = `${gutterPercent ?? 0}%`;
+const gutterString = `${gutterPercent ?? 5}%`;
 
 function enumeratePaths(remaining: string[], constructed: string[]) {
     const next = remaining.shift();

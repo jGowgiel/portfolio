@@ -45,10 +45,7 @@ const hasAccess = parseAccessKeys().includes(requiredAccessKey);
                 <h4>Limited access</h4>
                 <p>If you would like to view this content and don't know what this is - text me.</p>
                 <form method="POST">
-                    <label>
-                        Password:
-                        <input type="text" name="accesskey" />
-                    </label>
+                    <input type="text" name="accesskey" />
                     <button>Submit</button>
                 </form>
             </div>
@@ -56,3 +53,10 @@ const hasAccess = parseAccessKeys().includes(requiredAccessKey);
     )
 }
 {hasAccess && <slot />}
+
+<style>
+    form {
+        display: flex;
+        gap: 8px;
+    }
+</style>
