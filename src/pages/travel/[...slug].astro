@@ -17,7 +17,7 @@ const { slug } = Astro.params;
 const entry = pages.get(slug ?? "");
 
 if (!entry) {
-    return Astro.redirect("404");
+    return Astro.redirect("/404");
 }
 
 const { Content } = await entry.render();
